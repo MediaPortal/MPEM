@@ -1,0 +1,116 @@
+﻿<base:DialogBase x:Class="ExtensionManagerUI.Common.Dialogs.EMMessageBox"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+		xmlns:sys="clr-namespace:System;assembly=mscorlib"
+		xmlns:base="clr-namespace:ExtensionManagerUI.Common.Dialogs"
+		xmlns:converters="clr-namespace:ExtensionManagerUI.Common.Converters"
+        Title="TestDialog" x:Name="UI" 
+		Height="220" Width="500" 
+		MaxWidth="600" MaxHeight="600" 
+		MinHeight="180" MinWidth="500" 
+		UseLayoutRounding="True"  ResizeMode="NoResize" WindowStyle="None" AllowsTransparency="True" Background="Transparent" SizeToContent="WidthAndHeight">
+	
+	<base:DialogBase.Resources>
+		<converters:ValueToVisibilityConverter x:Key="ValueToVisibilityConverter" />
+	</base:DialogBase.Resources>
+
+	<Border DataContext="{Binding ElementName=UI}" Margin="6" CornerRadius="15" Background="Black" Opacity="1" BorderBrush="Black" BorderThickness="1">
+		<DockPanel>
+
+			<!--Title-->
+			<Border DockPanel.Dock="Top" CornerRadius="15,15,0,0"  >
+				<Border CornerRadius="15,15,0,0" Background="{StaticResource BlackGradient}">
+					<TextBlock Margin="5" MouseLeftButtonDown="Title_MouseDown" Text="{Binding MessageTitle, FallbackValue=MessageBox Title}" TextWrapping="Wrap" TextAlignment="Center" FontSize="16" FontWeight="Bold" />
+				</Border>
+				<Border.Style>
+					<Style TargetType="Border">
+						<Setter Property="Background" Value="{StaticResource BlueColor}" />
+						<Style.Triggers>
+							<DataTrigger Binding="{Binding MessageBoxIcon}" Value="Error">
+								<Setter Property="Background" Value="Red" />
+							</DataTrigger>
+							<DataTrigger Binding="{Binding MessageBoxIcon}" Value="Warn">
+								<Setter Property="Background" Value="Yellow" />
+							</DataTrigger>
+						</Style.Triggers>
+					</Style>
+				</Border.Style>
+			</Border>
+
+			<!--Footer-->
+			<Border DockPanel.Dock="Bottom" CornerRadius="0,0,15,15" Background="{StaticResource LightBackColor}"  Height="48"  >
+				<Border CornerRadius="0,0,15,15"  Background="{StaticResource BlackGradient}" Grid.Row="1" Height="48" VerticalAlignment="Bottom" Margin="0">
+					<StackPanel Orientation="Horizontal" HorizontalAlignment="Right" Margin="0,0,10,0">
+						<StackPanel.Resources>
+							<Style TargetType="Button" BasedOn="{StaticResource {x:Type Button}}">
+								<Setter Property="Margin" Value="2" />
+								<Setter Property="Height" Value="32" />
+								<Setter Property="Width" Value="90" />
+							</Style>
+						</StackPanel.Resources>
+
+						<Button Content="OK"
+						        Command="{Binding ButtonResultCommand}" 
+						        CommandParameter="{x:Static base:EMMessageBoxResult.OK}" 
+						        Visibility="{Binding MessageBoxButtons, Converter={StaticResource ValueToVisibilityConverter}, ConverterParameter=OK}"  />
+						<Button Content="Yes"
+						        Command="{Binding ButtonResultCommand}" 
+						        CommandParameter="{x:Static base:EMMessageBoxResult.Yes}" 
+						        Visibility="{Binding MessageBoxButtons, Converter={StaticResource ValueToVisibilityConverter}, ConverterParameter=YesNo|YesNoCancel}"/>
+						<Button Content="No"
+						        Command="{Binding ButtonResultCommand}" 
+						        CommandParameter="{x:Static base:EMMessageBoxResult.No}" 
+						        Visibility="{Binding MessageBoxButtons, Converter={StaticResource ValueToVisibilityConverter}, ConverterParameter=YesNo|YesNoCancel}" />
+						<Button Content="Cancel"
+						        Command="{Binding ButtonResultCommand}" 
+						        CommandParameter="{x:Static base:EMMessageBoxResult.Cancel}" 
+						        Visibility="{Binding MessageBoxButtons, Converter={StaticResource ValueToVisibilityConverter}, ConverterParameter=YesNoCancel}"/>
+					
+					</StackPanel>
+				</Border>
+			</Border>
+
+			<!--Content-->
+			<Grid>
+				<Grid.ColumnDefinitions>
+					<ColumnDefinition Width="Auto"/>
+					<ColumnDefinition Width="190*"/>
+				</Grid.ColumnDefinitions>
+
+				<Grid VerticalAlignment="Top" Grid.Column="0" MaxHeight="85" MaxWidth="85"  Name="grid3" >
+					<Image Margin="5" Name="image1" Stretch="Uniform" Source="{Binding MessageIcon}"  />
+					<Grid.Style>
+						<Style TargetType="Grid">
+							<Setter Property="Visibility" Value="Visible" />
+							<Style.Triggers>
+								<DataTrigger Binding="{Binding MessageBoxIcon}" Value="None">
+									<Setter Property="Visibility" Value="Collapsed" />
+								</DataTrigger>
+							</Style.Triggers>
+						</Style>
+					</Grid.Style>
+				</Grid>
+
+				<ScrollViewer Grid.Column="1" MaxHeight="500" VerticalScrollBarVisibility="Auto" HorizontalScrollBarVisibility="Disabled" >
+					<TextBlock Margin="10" Text="{Binding Message, FallbackValue=MessageBox Message}" VerticalAlignment="Center" FontSize="14" TextWrapping="Wrap" Foreground="{StaticResource GrayFontColor}" FontWeight="DemiBold"  Grid.Column="1">
+						<TextBlock.Style>
+							<Style TargetType="TextBlock">
+								<Setter Property="TextAlignment" Value="Left" />
+								<Style.Triggers>
+									<DataTrigger Binding="{Binding MessageBoxIcon}" Value="None">
+										<Setter Property="TextAlignment" Value="Center" />
+									</DataTrigger>
+								</Style.Triggers>
+							</Style>
+						</TextBlock.Style>
+					</TextBlock>
+				</ScrollViewer>
+
+			</Grid>
+		</DockPanel>
+	</Border>
+
+	<base:DialogBase.Effect>
+	  <DropShadowEffect Direction="250" Opacity="1" ShadowDepth="4" />
+	</base:DialogBase.Effect>
+</base:DialogBase>

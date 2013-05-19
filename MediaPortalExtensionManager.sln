@@ -1,0 +1,26 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio 2012
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionManagerUI", "ExtensionManagerUI\ExtensionManagerUI.csproj", "{AAA49165-E789-4827-ADD8-7C81E265B6A7}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "ExtensionManagerCommon", "ExtensionManagerCommon\ExtensionManagerCommon.csproj", "{8A0AF09C-C37C-4F78-94A3-C82752FF1C90}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{AAA49165-E789-4827-ADD8-7C81E265B6A7}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{AAA49165-E789-4827-ADD8-7C81E265B6A7}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{AAA49165-E789-4827-ADD8-7C81E265B6A7}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{AAA49165-E789-4827-ADD8-7C81E265B6A7}.Release|Any CPU.Build.0 = Release|Any CPU
+		{8A0AF09C-C37C-4F78-94A3-C82752FF1C90}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{8A0AF09C-C37C-4F78-94A3-C82752FF1C90}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{8A0AF09C-C37C-4F78-94A3-C82752FF1C90}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{8A0AF09C-C37C-4F78-94A3-C82752FF1C90}.Release|Any CPU.Build.0 = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+EndGlobal

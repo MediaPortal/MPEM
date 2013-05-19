@@ -1,0 +1,111 @@
+﻿<base:ViewBase x:Class="ExtensionManagerUI.Views.MainView"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+			 xmlns:base="clr-namespace:ExtensionManagerUI.Views"
+			 xmlns:dataObjects="clr-namespace:ExtensionManager.Common.DataObjects;assembly=ExtensionManager.Common"
+			 xmlns:Controls="clr-namespace:ExtensionManagerUI.Common.Controls"
+			 xmlns:conveters="clr-namespace:ExtensionManagerUI.Common.Converters"
+             mc:Ignorable="d" 
+             d:DesignHeight="700" d:DesignWidth="1180" x:Name="View" UseLayoutRounding="True" SnapsToDevicePixels="True" FontFamily="Arial" TextOptions.TextFormattingMode="Display" TextOptions.TextHintingMode="Fixed" >
+	<base:ViewBase.Resources>
+		<BooleanToVisibilityConverter x:Key="BoolToVisibilityConverter" />
+		<conveters:ValueToVisibilityConverter x:Key="ValueToVisibilityConverter" />
+		<conveters:BoolToImageConverter x:Key="TickCrossBoolToImageConverter" ImageTrue="/ExtensionManagerUI;component/Images/Tick.png" ImageFalse="/ExtensionManagerUI;component/Images/Cross.png" />
+
+		<DataTemplate x:Key="MySystemTemplate" DataType="{x:Type dataObjects:MediaPortalInfo}">
+			<StackPanel>
+				<Border CornerRadius="3" Background="{StaticResource MediumBorderColor}" Height="45" Margin="-1">
+					<TextBlock TextAlignment="Center" VerticalAlignment="Center" Text="MY SYSTEM" FontSize="16" Foreground="{StaticResource BlueFontColor}" />
+				</Border>
+				<Controls:RoundedImage CornerRadius="3" Stretch="Uniform" Margin="10" Source="/ExtensionManagerUI;component/Images/Titan.jpg" />
+				<UniformGrid Margin="10" Rows="6" Columns="2" >
+					<UniformGrid.Resources>
+						<Style TargetType="TextBlock">
+							<Setter Property="Foreground" Value="{StaticResource GrayFontColor}" />
+							<Setter Property="FontSize" Value="12" />
+							<Setter Property="Height" Value="16" />
+						</Style>
+						<Style TargetType="Image">
+							<Setter Property="Stretch" Value="Uniform" />
+							<Setter Property="HorizontalAlignment" Value="Left" />
+							<Setter Property="Height" Value="16" />
+						</Style>
+					</UniformGrid.Resources>
+					<TextBlock Text="MediaPortal"   />
+					<TextBlock Text="{Binding MediaPortalVersion.FriendlyName}" />
+					<TextBlock Text="MultiSeat" />
+					<Image Source="{Binding InstallType, Converter={StaticResource TickCrossBoolToImageConverter}, ConverterParameter=MultiSeat}" />
+					<TextBlock Text="SingleSeat" />
+					<Image Source="{Binding InstallType, Converter={StaticResource TickCrossBoolToImageConverter}, ConverterParameter=SingleSeat|MediaPortalOnly}" />
+					<TextBlock Text="TV-Server" />
+					<Image Source="{Binding InstallType, Converter={StaticResource TickCrossBoolToImageConverter}, ConverterParameter=SingleSeat|MultiSeat}" />
+					<TextBlock Text="Extensions" />
+					<TextBlock Text="{Binding InstalledExtensions.Count}" />
+					<TextBlock Text="Skin" />
+					<TextBlock Text="{Binding MediaPortalSkin.Name}" />
+				</UniformGrid>
+			</StackPanel>
+		</DataTemplate>
+
+	</base:ViewBase.Resources>
+
+	<Border DataContext="{Binding ElementName=View}" CornerRadius="15" Background="{StaticResource LightBackColor}" >
+		<Grid>
+			<Grid.ColumnDefinitions>
+				<ColumnDefinition Width="212" />
+				<ColumnDefinition Width="944*" />
+			</Grid.ColumnDefinitions>
+		
+
+		    <!--Left Panel-->
+			<Border CornerRadius="15,0,0,15" Background="{StaticResource DarkBackColor}" >
+				<Grid>
+					<Grid.RowDefinitions>
+						<RowDefinition Height="164"/>
+						<RowDefinition Height="142"/>
+						<RowDefinition/>
+					</Grid.RowDefinitions>
+					<Image Margin="30" Stretch="Uniform" Source="/ExtensionManagerUI;component/Images/MPLogo.PNG" />
+					<StackPanel Margin="18,0,18,0" Name="stackPanel1" Grid.Row="1">
+						<RadioButton x:Name="searchButton" IsChecked="True" Style="{StaticResource ArrowButton}" Content="Search" Height="38" FontSize="16" FontWeight="Bold" Foreground="#FF1F1F1F" Background="{StaticResource BlueColor}" Margin="2"  />
+						<RadioButton x:Name="manageButton"  Style="{StaticResource ArrowButton}" Content="Manage" Height="38" FontSize="16" FontWeight="Bold" Foreground="#FF1F1F1F" Background="{StaticResource GreenColor}" Margin="2"  />
+						<RadioButton x:Name="createButton" Style="{StaticResource ArrowButton}" Content="Create" Height="38" FontSize="16" FontWeight="Bold" Foreground="#FF1F1F1F" Background="{StaticResource OrangeColor}" Margin="2"  />
+					</StackPanel>
+
+					<!--My System-->
+					<Border CornerRadius="3,3,0,8" BorderBrush="{StaticResource MediumBorderColor}" BorderThickness="1" Margin="18,0,18,18" VerticalAlignment="Bottom" Grid.Row="2" >
+						<ContentPresenter Content="{Binding ViewModel.MediaPortalInfo}" ContentTemplate="{StaticResource MySystemTemplate}" />
+					</Border>
+				</Grid>
+			</Border>
+
+			<!--Right Panel-->
+			<DockPanel Grid.Column="1">
+				<Grid DockPanel.Dock="Top">
+					<Grid.ColumnDefinitions>
+						<ColumnDefinition Width="457*"/>
+						<ColumnDefinition Width="18*"/>
+					</Grid.ColumnDefinitions>
+					<Label VerticalContentAlignment="Center" HorizontalContentAlignment="Center" Content="MediaPortal Extension Manager" FontSize="18" Foreground="{StaticResource GrayFontColor}" FontWeight="DemiBold" VerticalAlignment="Center"  MouseLeftButtonDown="WindowTitle_MouseDown" />
+					<Grid Grid.Column="1" MouseUp="WindowClose_MouseUp" Background="Transparent">
+						<Path Data="{StaticResource CloseX}"  Stretch="Fill" StrokeThickness="3" Stroke="{StaticResource GrayFontColor}" Width="16" Height="16"  />
+					</Grid>
+				</Grid>
+				<Grid>
+					<base:SearchView Margin="5,15,15,15" 
+					                 ViewModel="{Binding SearchViewModel}" 
+									 Visibility="{Binding IsChecked, ElementName=searchButton, Converter={StaticResource BoolToVisibilityConverter}}"/>
+					<base:ManageView Margin="5,15,15,15" 
+					                 ViewModel="{Binding ManageViewModel}" 
+									 Visibility="{Binding IsChecked, ElementName=manageButton, Converter={StaticResource BoolToVisibilityConverter}}"/>
+					<base:CreateView Margin="5,15,15,15" 
+					                 ViewModel="{Binding CreateViewModel}"
+									 Visibility="{Binding IsChecked, ElementName=createButton, Converter={StaticResource BoolToVisibilityConverter}}"/>
+				</Grid>
+			</DockPanel>
+
+		</Grid>
+	</Border>
+</base:ViewBase>
